@@ -4,5 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\N5Company.Business\N5Company.Business.csproj" />
+    <ProjectReference Include="..\N5Company.Interfaces\N5Company.Interfaces.csproj" />
+    <ProjectReference Include="..\N5Company.MapperProfiles\N5Company.MapperProfiles.csproj" />
+    <ProjectReference Include="..\N5Company.Repositories\N5Company.Repositories.csproj" />
+  </ItemGroup>
+
 
 </Project>

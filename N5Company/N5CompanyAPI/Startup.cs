@@ -1,15 +1,14 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using N5Company.Business;
+using N5Company.Interfaces.IBusiness;
+using N5Company.Interfaces.IRepositories;
+using N5Company.MapperProfiles;
+using N5Company.Repositories;
 
 namespace N5CompanyAPI
 {
@@ -26,6 +25,15 @@ namespace N5CompanyAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IPermissionBusiness, PermissionBusiness>();
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddProfile(new PermissionProfile());
+            });
+            IMapper mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
