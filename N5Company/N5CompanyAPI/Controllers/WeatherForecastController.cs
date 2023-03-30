@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AvalithChallange.Controllers
+namespace N5CompanyAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]

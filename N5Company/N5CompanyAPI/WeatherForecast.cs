@@ -1,6 +1,6 @@
 using System;
 
-namespace AvalithChallange
+namespace N5CompanyAPI
 {
     public class WeatherForecast
     {
