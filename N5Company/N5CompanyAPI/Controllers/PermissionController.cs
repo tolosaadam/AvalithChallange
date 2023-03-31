@@ -30,6 +30,7 @@ namespace N5CompanyAPI.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 404)]
         public async Task<IActionResult> RequestPermission(int id)
         {
+            _logger.LogInformation("Received request for {OperationName}", HttpContext.Request.Path);
             var permission = await _permissionBusiness.GetPermissionAsync(id);
             if (permission == null) return NotFound($"Permission with id = {id} not found");
             return Ok(permission);
@@ -42,6 +43,7 @@ namespace N5CompanyAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPermissions()
         {
+            _logger.LogInformation("Received request for {OperationName}", HttpContext.Request.Path);
             return Ok(await _permissionBusiness.GetAllPermissionsAsync());
         }
 
@@ -58,6 +60,7 @@ namespace N5CompanyAPI.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 400)]
         public async Task<IActionResult> ModifyPermission(int id, [FromBody] PermissionDTO model)
         {
+            _logger.LogInformation("Received request for {OperationName}", HttpContext.Request.Path);
             var businessResponse = await _permissionBusiness.UpdatePermissionAsync(id, model);
             return ProducePermissionResponse(businessResponse);
         }
