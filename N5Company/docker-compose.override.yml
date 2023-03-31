@@ -1,13 +1,26 @@
 version: '3.4'
 
 services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: sql_server
+    environment:
+        SA_PASSWORD: 123456aA_!
+        ACCEPT_EULA: Y
+        MSSQL_DBNAME: N5CompanyDB
+    ports:
+        - "1433:1433"
   n5companyapi:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_ENVIRONMENT=DockerCompose
+      #- ASPNETCORE_URLS=https://+:443;http://+:80
+    links:
+      - db
+    depends_on:
+        db:
+          condition: service_started
     ports:
-      - "80"
-      - "443"
+      - "5000:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

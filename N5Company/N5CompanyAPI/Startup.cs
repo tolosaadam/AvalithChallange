@@ -1,6 +1,5 @@
 using AutoMapper;
 using System;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +18,7 @@ using N5Company.Entities.Models;
 using N5Company.Commands.UpdatePermission;
 using Nest;
 using N5Company.Commands.CreatePermission;
+using Microsoft.OpenApi.Models;
 
 namespace N5CompanyAPI
 {
@@ -35,25 +35,13 @@ namespace N5CompanyAPI
         public void ConfigureServices(IServiceCollection services)
         {
             #region Database
-            //services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseInMemoryDatabase("N5Company");
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x =>
+                {
+                    x.MigrationsAssembly("N5Company.Repositories");
+                });
             });
-
-
-            var serviceProvider = services.BuildServiceProvider();
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetService<AppDbContext>();
-
-                // Agregar datos
-                dbContext.Permissions.Add(new Permission { Id = 1, EmployeeForename = "Diego", EmployeeSurname = "Casanova", PermissionDate = new DateTime(), PermissionTypeId = 1 });
-                dbContext.Permissions.Add(new Permission { Id = 2, EmployeeForename = "Adam", EmployeeSurname = "Tolosa", PermissionDate = new DateTime(), PermissionTypeId = 2 });
-                dbContext.PermissionTypes.Add(new PermissionType { Id = 1, Description = "Description 1" });
-                dbContext.PermissionTypes.Add(new PermissionType { Id = 2, Description = "Description 2" });
-                dbContext.SaveChanges();
-            }
             #endregion
 
             #region Elastic Search
@@ -67,6 +55,11 @@ namespace N5CompanyAPI
 
             services.AddSingleton<IElasticClient>(client);
             #endregion
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "N5CompanyAPI", Version = "v1" });
+            });
 
             services.AddControllers();
 
@@ -99,6 +92,8 @@ namespace N5CompanyAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "N5CompanyAPI v1"));
             }
 
             app.UseHttpsRedirection();

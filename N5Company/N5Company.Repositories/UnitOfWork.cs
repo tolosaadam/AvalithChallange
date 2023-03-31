@@ -11,7 +11,6 @@ namespace N5Company.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
-        private bool _disposed;
         private Dictionary<string, object> _repositories;
 
         public UnitOfWork(AppDbContext context)
