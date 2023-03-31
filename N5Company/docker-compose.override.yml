@@ -1,6 +1,7 @@
 version: '3.4'
 
 services:
+
   db:
     image: mcr.microsoft.com/mssql/server:2017-latest
     container_name: sql_server
@@ -12,10 +13,10 @@ services:
         - "1433:1433"
     networks:
       - my-network
+
   n5companyapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=DockerCompose
-      #- ASPNETCORE_URLS=https://+:443;http://+:80
     links:
       - db
     depends_on:
@@ -30,6 +31,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - my-network
+      - kafka-net
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: elasticsearch
@@ -51,8 +54,35 @@ services:
       - 9300:9300
     networks:
       - my-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - kafka-net
+    environment:
+        ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9400:9400"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9400
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - kafka-net
+ 
 networks:
   my-network:
+    driver: bridge
+  kafka-net:
     driver: bridge
 
 volumes:

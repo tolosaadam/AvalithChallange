@@ -53,7 +53,7 @@ namespace N5CompanyAPI.Controllers
         /// Lists all permissions from the API Hitting ElasticSearch. 
         /// </summary>
         /// <returns>List of permissions.</returns>
-        [HttpGet("elastic")]
+        [HttpGet("GetAllPermissionsElastic")]
         public async Task<IActionResult> GetPermissionsFromElastic()
         {
             _logger.LogInformation("Received request for {OperationName}", HttpContext.Request.Path);

@@ -4,6 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using N5Company.Business;
+using N5CompanyAPI.Middlewares;
+using System.IO;
+using System.Reflection;
+using System;
 
 namespace N5CompanyAPI
 {
@@ -32,6 +37,9 @@ namespace N5CompanyAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "N5CompanyAPI", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddControllers();
@@ -45,8 +53,17 @@ namespace N5CompanyAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "N5CompanyAPI v1"));
+                
             }
+            app.UseDeveloperExceptionPage();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "N5CompanyAPI v1"));
+
+            var producer = new KafkaProducerBusiness(Configuration.GetValue<string>("Kafka:BootstrapServers"));
+
+
+            app.UseMiddleware<KafkaMiddleware>(producer);
 
             app.UseHttpsRedirection();
 

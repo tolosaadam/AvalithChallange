@@ -26,6 +26,7 @@ namespace N5CompanyAPI
             services.AddScoped<IPermissionBusiness, PermissionBusiness>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IKafkaProducerBusiness, KafkaProducerBusiness>();
             return services;
         }
 
