@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using MediatR;
 using N5Company.Business.Interfaces;
+using N5Company.Commands.CreatePermission;
 using N5Company.Commands.UpdatePermission;
 using N5Company.Entities.DTOS;
 using N5Company.Entities.Models;
 using N5Company.Entities.Responses;
-using N5Company.Queries.GetPermission;
 using N5Company.Queries.GetPermissions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace N5Company.Business
 {
@@ -30,10 +29,12 @@ namespace N5Company.Business
             return _mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionDTO>>(permissions);
         }
 
-        public async Task<PermissionDTO> GetPermissionAsync(int id)
+        public async Task<CommandResponse<PermissionDTO>> CreatePermissionAsync(PermissionDTO model)
         {
-            var permission = await _mediator.Send(new GetPermissionQuery(id));
-            return _mapper.Map<Permission, PermissionDTO>(permission);
+            var permission = _mapper.Map<PermissionDTO, Permission>(model);
+            var commandResponse = await _mediator.Send(new CreatePermissionCommand(permission.EmployeeForename, permission.EmployeeSurname, permission.PermissionTypeId));
+            if (commandResponse.Success) await _ElasticSearchBusiness.IndexAsync(commandResponse.Data);
+            return _mapper.Map<CommandResponse<Permission>, CommandResponse<PermissionDTO>>(commandResponse);
         }
 
         public async Task<CommandResponse<PermissionDTO>> UpdatePermissionAsync(int id, PermissionDTO model)

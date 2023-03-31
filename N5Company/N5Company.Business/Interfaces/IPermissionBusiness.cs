@@ -9,7 +9,7 @@ namespace N5Company.Business.Interfaces
 {
     public interface IPermissionBusiness
     {
-        Task<PermissionDTO> GetPermissionAsync(int id);
+        Task<CommandResponse<PermissionDTO>> CreatePermissionAsync(PermissionDTO model);
         Task<IEnumerable<PermissionDTO>> GetAllPermissionsAsync();
         Task<CommandResponse<PermissionDTO>> UpdatePermissionAsync(int id, PermissionDTO model);
     }

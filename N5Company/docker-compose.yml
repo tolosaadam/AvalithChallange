@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  n5companyapi:
+    image: ${DOCKER_REGISTRY-}n5companyapi
+    build:
+      context: .
+      dockerfile: N5CompanyAPI/Dockerfile

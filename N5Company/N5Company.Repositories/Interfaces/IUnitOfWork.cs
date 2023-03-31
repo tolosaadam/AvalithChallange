@@ -8,7 +8,7 @@ namespace N5Company.Repositories.Interfaces
 {
     public interface IUnitOfWork
     {
-        Task CompleteAsync();
-        Task CompleteAsync(CancellationToken token);
+        IRepository<T> GetRepository<T>() where T : class;
+        Task CommitAsync();
     }
 }

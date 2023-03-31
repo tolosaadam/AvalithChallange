@@ -15,11 +15,10 @@ using N5Company.Repositories.Interfaces;
 using N5Company.Repositories.Repositories;
 using System.Reflection;
 using N5Company.Queries.GetPermissions;
-using System.Net.NetworkInformation;
 using N5Company.Entities.Models;
 using N5Company.Commands.UpdatePermission;
-using N5Company.Queries.GetPermission;
 using Nest;
+using N5Company.Commands.CreatePermission;
 
 namespace N5CompanyAPI
 {
@@ -79,7 +78,7 @@ namespace N5CompanyAPI
             #region MediatR
             services.AddMediatR(cfg =>
             {
-                cfg.RegisterServicesFromAssembly(typeof(GetPermissionQuery).GetTypeInfo().Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(CreatePermissionCommand).GetTypeInfo().Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(GetAllPermissionsQuery).GetTypeInfo().Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(UpdatePermissionCommand).GetTypeInfo().Assembly);
             });

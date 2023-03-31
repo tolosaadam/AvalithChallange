@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using N5Company.Business.Interfaces;
 using N5Company.Entities.DTOS;
 using N5Company.Entities.Responses;
+using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace N5CompanyAPI.Controllers
@@ -21,19 +23,19 @@ namespace N5CompanyAPI.Controllers
         }
 
         /// <summary>
-        /// Lists a given permission by their ID.
+        /// Creates a new permission in the API.
         /// </summary>
-        /// <param name="id">Permission ID.</param>
-        /// <returns>Permission.</returns>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(PermissionDTO), 200)]
-        [ProducesResponseType(typeof(ErrorResponse), 404)]
-        public async Task<IActionResult> RequestPermission(int id)
+        /// <param name="model">Updated permission data.</param>
+        /// <returns>Response for the request.</returns>
+        /// <response code="201">Returns the newly created permission data.</response>
+        /// <response code="400">Return data containing information about why has the request failed.</response>
+        [HttpPost]
+        [ProducesResponseType(typeof(PermissionDTO), 201)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
+        public async Task<IActionResult> RequestPermission([FromBody] PermissionDTO model)
         {
             _logger.LogInformation("Received request for {OperationName}", HttpContext.Request.Path);
-            var permission = await _permissionBusiness.GetPermissionAsync(id);
-            if (permission == null) return NotFound($"Permission with id = {id} not found");
-            return Ok(permission);
+            return await HandleBusinessResponse(async () => await _permissionBusiness.CreatePermissionAsync(model), HttpStatusCode.Created);
         }
 
         /// <summary>
@@ -61,18 +63,21 @@ namespace N5CompanyAPI.Controllers
         public async Task<IActionResult> ModifyPermission(int id, [FromBody] PermissionDTO model)
         {
             _logger.LogInformation("Received request for {OperationName}", HttpContext.Request.Path);
-            var businessResponse = await _permissionBusiness.UpdatePermissionAsync(id, model);
-            return ProducePermissionResponse(businessResponse);
+            return await HandleBusinessResponse(async () => await _permissionBusiness.UpdatePermissionAsync(id, model), HttpStatusCode.OK);
         }
 
-        private IActionResult ProducePermissionResponse(CommandResponse<PermissionDTO> response)
+        private async Task<IActionResult> HandleBusinessResponse<TData>(Func<Task<CommandResponse<TData>>> businessAction, HttpStatusCode successStatusCode)
         {
-            if (!response.Success)
-            {
-                return BadRequest(response.Message);
-            }
+            var businessResponse = await businessAction();
 
-            return Ok(response.Data);
+            if (businessResponse.Success)
+            {
+                return StatusCode((int)successStatusCode, businessResponse.Data);
+            }
+            else
+            {
+                return BadRequest(businessResponse.Message);
+            }
         }
     }
 }

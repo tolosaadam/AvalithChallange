@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N5Company.Helpers", "N5Comp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N5Company.UnitTests", "N5Company.UnitTests\N5Company.UnitTests.csproj", "{A4A42344-7074-4BC8-8176-C7E705765137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N5Company.Queries", "N5Company.Queries\N5Company.Queries.csproj", "{0C2711EE-00F4-410F-9B6D-D3056B78A0C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N5Company.Queries", "N5Company.Queries\N5Company.Queries.csproj", "{0C2711EE-00F4-410F-9B6D-D3056B78A0C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N5Company.Commands", "N5Company.Commands\N5Company.Commands.csproj", "{7BB01F6A-FB44-485E-8472-51E28BBAD4D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N5Company.Commands", "N5Company.Commands\N5Company.Commands.csproj", "{7BB01F6A-FB44-485E-8472-51E28BBAD4D2}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{11BC32E4-9D7E-4D4B-9AB1-359BA6C9B202}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{7BB01F6A-FB44-485E-8472-51E28BBAD4D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BB01F6A-FB44-485E-8472-51E28BBAD4D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BB01F6A-FB44-485E-8472-51E28BBAD4D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11BC32E4-9D7E-4D4B-9AB1-359BA6C9B202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11BC32E4-9D7E-4D4B-9AB1-359BA6C9B202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11BC32E4-9D7E-4D4B-9AB1-359BA6C9B202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11BC32E4-9D7E-4D4B-9AB1-359BA6C9B202}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

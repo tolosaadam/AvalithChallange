@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using N5Company.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace N5Company.Repositories
 {
-    public abstract class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly AppDbContext _context;
 
