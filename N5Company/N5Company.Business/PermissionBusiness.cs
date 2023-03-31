@@ -16,10 +16,12 @@ namespace N5Company.Business
     public class PermissionBusiness : IPermissionBusiness
     {
         private readonly IMediator _mediator;
+        private readonly IElasticSearchBusiness<Permission> _ElasticSearchBusiness;
         private readonly IMapper _mapper;
-        public PermissionBusiness(IMediator mediator, IMapper mapper)
+        public PermissionBusiness(IMediator mediator, IElasticSearchBusiness<Permission> ElasticSearchBusiness, IMapper mapper)
         {
             _mediator = mediator;
+            _ElasticSearchBusiness = ElasticSearchBusiness;
             _mapper = mapper;
         }
         public async Task<IEnumerable<PermissionDTO>> GetAllPermissionsAsync()
@@ -38,6 +40,7 @@ namespace N5Company.Business
         {
             var permission = _mapper.Map<PermissionDTO, Permission>(model);
             var commandResponse = await _mediator.Send(new UpdatePermissionCommand(id, permission.EmployeeForename, permission.EmployeeSurname, permission.PermissionTypeId));
+            if(commandResponse.Success) await _ElasticSearchBusiness.IndexAsync(commandResponse.Data);
             return _mapper.Map<CommandResponse<Permission>, CommandResponse<PermissionDTO>>(commandResponse);
         }
     }

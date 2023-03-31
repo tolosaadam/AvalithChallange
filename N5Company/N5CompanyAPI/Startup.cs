@@ -19,6 +19,7 @@ using System.Net.NetworkInformation;
 using N5Company.Entities.Models;
 using N5Company.Commands.UpdatePermission;
 using N5Company.Queries.GetPermission;
+using Nest;
 
 namespace N5CompanyAPI
 {
@@ -34,9 +35,8 @@ namespace N5CompanyAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Database
             //services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseInMemoryDatabase("N5Company");
@@ -55,26 +55,43 @@ namespace N5CompanyAPI
                 dbContext.PermissionTypes.Add(new PermissionType { Id = 2, Description = "Description 2" });
                 dbContext.SaveChanges();
             }
+            #endregion
+
+            #region Elastic Search
+            var elasticsearchUrl = Configuration.GetValue<string>("ElasticSearch:Url");
+            var elasticsearchIndex = Configuration.GetValue<string>("ElasticSearch:Index");
+
+            var settings = new ConnectionSettings(new Uri(elasticsearchUrl))
+                .DefaultIndex(elasticsearchIndex);
+
+            var client = new ElasticClient(settings);
+
+            services.AddSingleton<IElasticClient>(client);
+            #endregion
 
             services.AddControllers();
 
+            services.AddScoped<IElasticSearchBusiness<Permission>, ElasticSearchBusiness<Permission>>();
             services.AddScoped<IPermissionBusiness, PermissionBusiness>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            #region MediatR
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(typeof(GetPermissionQuery).GetTypeInfo().Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(GetAllPermissionsQuery).GetTypeInfo().Assembly);
                 cfg.RegisterServicesFromAssembly(typeof(UpdatePermissionCommand).GetTypeInfo().Assembly);
             });
+            #endregion
 
-
+            #region Auto Mapper
             var config = new MapperConfiguration(cfg => {
                 cfg.AddProfile(new PermissionProfile());
             });
             IMapper mapper = config.CreateMapper();
             services.AddSingleton(mapper);
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
