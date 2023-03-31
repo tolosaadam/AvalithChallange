@@ -10,5 +10,6 @@ namespace N5Company.Business.Interfaces
         Task<bool> IndexAsync(T document);
         Task<bool> DeleteAsync(string id);
         Task<IEnumerable<T>> SearchAsync(string query);
+        Task<IEnumerable<T>> GetAllAsync();
     }
 }

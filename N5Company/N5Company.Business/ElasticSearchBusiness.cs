@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Elasticsearch.Net;
+using Microsoft.Extensions.Configuration;
 using N5Company.Business.Interfaces;
+using N5Company.Entities.Models;
 using Nest;
 using System;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +20,8 @@ namespace N5Company.Business
         public ElasticSearchBusiness(IConfiguration configuration)
         {
             var settings = new ConnectionSettings(new Uri(configuration["ElasticSearch:Url"]))
+                .DisableDirectStreaming()
+                .EnableApiVersioningHeader()
                 .DefaultIndex(configuration["ElasticSearch:IndexName"])
                 .DefaultMappingFor<T>(m => m.IndexName(_indexName));
 
@@ -47,6 +53,21 @@ namespace N5Company.Business
                         .Query(query)
                     )
                 )
+            );
+
+            if (!response.IsValid)
+            {
+                throw new Exception($"Failed to execute search: {response.DebugInformation}");
+            }
+
+            return response.Documents;
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            var response = await _client.SearchAsync<T>(s => s
+                .Index(_indexName)
+                .Query(q => q.MatchAll())
             );
 
             if (!response.IsValid)

@@ -50,6 +50,17 @@ namespace N5CompanyAPI.Controllers
         }
 
         /// <summary>
+        /// Lists all permissions from the API Hitting ElasticSearch. 
+        /// </summary>
+        /// <returns>List of permissions.</returns>
+        [HttpGet("elastic")]
+        public async Task<IActionResult> GetPermissionsFromElastic()
+        {
+            _logger.LogInformation("Received request for {OperationName}", HttpContext.Request.Path);
+            return Ok(await _permissionBusiness.GetAllPermissionsFromElasticAsync());
+        }
+
+        /// <summary>
         /// Updates a given permission by their identifier.
         /// </summary>
         /// <param name="id">Permission ID.</param>

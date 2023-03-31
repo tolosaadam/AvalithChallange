@@ -54,15 +54,14 @@ namespace N5CompanyAPI
 
         public static IServiceCollection AddAndConfigureElasticSearch(this IServiceCollection services, IConfiguration configuration)
         {
-            var elasticsearchUrl = configuration.GetValue<string>("ElasticSearch:Url");
-            var elasticsearchIndex = configuration.GetValue<string>("ElasticSearch:Index");
-
-            var settings = new ConnectionSettings(new Uri(elasticsearchUrl))
-                .DefaultIndex(elasticsearchIndex);
-
+            var settings = new ConnectionSettings(new Uri(configuration["ElasticSearch:Url"]));
+            var defaultIndex = configuration["ElasticSearch:IndexName"];
+            if (!string.IsNullOrEmpty(defaultIndex))
+                settings = settings.DefaultIndex(defaultIndex);
             var client = new ElasticClient(settings);
-
             services.AddSingleton<IElasticClient>(client);
+
+            services.AddSingleton(typeof(IElasticSearchBusiness<Permission>), typeof(ElasticSearchBusiness<Permission>));
 
             return services;
         }

@@ -12,5 +12,6 @@ namespace N5Company.Business.Interfaces
         Task<CommandResponse<PermissionDTO>> CreatePermissionAsync(PermissionDTO model);
         Task<IEnumerable<PermissionDTO>> GetAllPermissionsAsync();
         Task<CommandResponse<PermissionDTO>> UpdatePermissionAsync(int id, PermissionDTO model);
+        Task<IEnumerable<PermissionDTO>> GetAllPermissionsFromElasticAsync();
     }
 }

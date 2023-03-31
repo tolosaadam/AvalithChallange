@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Nest;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace N5Company.Entities.Models
 {
+    [ElasticsearchType(RelationName = "permission", IdProperty = nameof(Id))]
     public class Permission
     {
         public int Id { get; set; }
