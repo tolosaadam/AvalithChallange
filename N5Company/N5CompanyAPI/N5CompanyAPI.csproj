@@ -1,12 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\N5Company.Business\N5Company.Business.csproj" />
-    <ProjectReference Include="..\N5Company.Interfaces\N5Company.Interfaces.csproj" />
     <ProjectReference Include="..\N5Company.MapperProfiles\N5Company.MapperProfiles.csproj" />
     <ProjectReference Include="..\N5Company.Repositories\N5Company.Repositories.csproj" />
   </ItemGroup>
