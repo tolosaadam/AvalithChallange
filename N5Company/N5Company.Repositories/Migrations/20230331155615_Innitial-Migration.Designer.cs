@@ -52,7 +52,7 @@ namespace N5Company.Repositories.Migrations
                             Id = 1,
                             EmployeeForename = "Forename 1",
                             EmployeeSurname = "Surname 1",
-                            PermissionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PermissionDate = DateTime.Now,
                             PermissionTypeId = 1
                         },
                         new
@@ -60,7 +60,7 @@ namespace N5Company.Repositories.Migrations
                             Id = 2,
                             EmployeeForename = "Forename 2",
                             EmployeeSurname = "Surname 2",
-                            PermissionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PermissionDate = DateTime.Now,
                             PermissionTypeId = 2
                         },
                         new
@@ -68,7 +68,7 @@ namespace N5Company.Repositories.Migrations
                             Id = 3,
                             EmployeeForename = "Forename 3",
                             EmployeeSurname = "Surname 3",
-                            PermissionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PermissionDate = DateTime.Now,
                             PermissionTypeId = 3
                         });
                 });

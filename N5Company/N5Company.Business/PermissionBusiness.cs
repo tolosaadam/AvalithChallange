@@ -23,36 +23,36 @@ namespace N5Company.Business
             _elasticSearchBusiness = elasticSearchBusiness;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<PermissionDTO>> GetAllPermissionsAsync()
+        public async Task<IEnumerable<PermissionDTOGet>> GetAllPermissionsAsync()
         {
             var permissions = await _mediator.Send(new GetAllPermissionsQuery());
             foreach (Permission permission in permissions)
             {
                 await _elasticSearchBusiness.IndexAsync(permission);
             };
-            return _mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionDTO>>(permissions);
+            return _mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionDTOGet>>(permissions);
         }
 
-        public async Task<CommandResponse<PermissionDTO>> CreatePermissionAsync(PermissionDTO model)
+        public async Task<CommandResponse<PermissionDTOGet>> CreatePermissionAsync(PermissionDTO model)
         {
             var permission = _mapper.Map<PermissionDTO, Permission>(model);
             var commandResponse = await _mediator.Send(new CreatePermissionCommand(permission.EmployeeForename, permission.EmployeeSurname, permission.PermissionTypeId));
             if (commandResponse.Success) await _elasticSearchBusiness.IndexAsync(commandResponse.Data);
-            return _mapper.Map<CommandResponse<Permission>, CommandResponse<PermissionDTO>>(commandResponse);
+            return _mapper.Map<CommandResponse<Permission>, CommandResponse<PermissionDTOGet>>(commandResponse);
         }
 
-        public async Task<CommandResponse<PermissionDTO>> UpdatePermissionAsync(int id, PermissionDTO model)
+        public async Task<CommandResponse<PermissionDTOGet>> UpdatePermissionAsync(int id, PermissionDTO model)
         {
             var permission = _mapper.Map<PermissionDTO, Permission>(model);
             var commandResponse = await _mediator.Send(new UpdatePermissionCommand(id, permission.EmployeeForename, permission.EmployeeSurname, permission.PermissionTypeId));
             if(commandResponse.Success) await _elasticSearchBusiness.IndexAsync(commandResponse.Data);
-            return _mapper.Map<CommandResponse<Permission>, CommandResponse<PermissionDTO>>(commandResponse);
+            return _mapper.Map<CommandResponse<Permission>, CommandResponse<PermissionDTOGet>>(commandResponse);
         }
 
-        public async Task<IEnumerable<PermissionDTO>> GetAllPermissionsFromElasticAsync()
+        public async Task<IEnumerable<PermissionDTOGet>> GetAllPermissionsFromElasticAsync()
         {
             var permissions = await _elasticSearchBusiness.GetAllAsync();
-            return _mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionDTO>>(permissions);
+            return _mapper.Map<IEnumerable<Permission>, IEnumerable<PermissionDTOGet>>(permissions);
         }
     }
     

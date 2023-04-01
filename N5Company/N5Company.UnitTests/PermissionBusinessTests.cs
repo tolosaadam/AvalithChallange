@@ -32,7 +32,7 @@ namespace N5Company.UnitTests
         }
 
         [Fact]
-        public async Task GetAllPermissionsAsync_ShouldReturnListOfPermissions()
+        public async Task GetAllPermissionsAsync_ShouldReturnListOfPermissionsDTO()
         {
             // Arrange
             var permissions = new List<Permission>
@@ -49,55 +49,55 @@ namespace N5Company.UnitTests
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsType<List<PermissionDTO>>(result);
+            Assert.IsType<List<PermissionDTOGet>>(result);
             Assert.Equal(permissions.Count, result.Count());
         }
 
         [Fact]
-        public async Task CreatePermissionAsync_ShouldReturnCommandResponseOfPermissionDTO()
+        public async Task CreatePermissionAsync_ShouldReturnCommandResponseOfPermissionDTOGet()
         {
             // Arrange
-            var permissionDto = new PermissionDTO { EmployeeForename = "John", EmployeeSurname = "Doe", PermissionTypeId = 1 };
-            var permission = _mapper.Map<PermissionDTO, Permission>(permissionDto);
+            var permissionDTO = new PermissionDTO { EmployeeForename = "John", EmployeeSurname = "Doe", PermissionTypeId = 1 };
+            var permission = _mapper.Map<PermissionDTO, Permission>(permissionDTO);
             var commandResponse = new CommandResponse<Permission>(permission);
             _mediatorMock.Setup(x => x.Send(It.IsAny<CreatePermissionCommand>(), default)).ReturnsAsync(commandResponse);
             _elasticSearchBusinessMock.Setup(x => x.IndexAsync(It.IsAny<Permission>())).Returns(Task.FromResult(true));
             var permissionBusiness = new PermissionBusiness(_mediatorMock.Object, _elasticSearchBusinessMock.Object, _mapper);
 
             // Act
-            var result = await permissionBusiness.CreatePermissionAsync(permissionDto);
+            var result = await permissionBusiness.CreatePermissionAsync(permissionDTO);
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsType<CommandResponse<PermissionDTO>>(result);
+            Assert.IsType<CommandResponse<PermissionDTOGet>>(result);
             Assert.Equal(commandResponse.Success, result.Success);
             Assert.NotNull(result.Data);
-            Assert.IsType<PermissionDTO>(result.Data);
+            Assert.IsType<PermissionDTOGet>(result.Data);
             Assert.Equal(permission.EmployeeForename, result.Data.EmployeeForename);
             Assert.Equal(permission.EmployeeSurname, result.Data.EmployeeSurname);
             Assert.Equal(permission.PermissionTypeId, result.Data.PermissionTypeId);
         }
 
         [Fact]
-        public async Task UpdatePermissionAsync_ShouldReturnCommandResponseOfPermissionDTO()
+        public async Task UpdatePermissionAsync_ShouldReturnCommandResponseOfPermissionDTOGet()
         {
             // Arrange
-            var permissionDto = new PermissionDTO { EmployeeForename = "John", EmployeeSurname = "Doe", PermissionTypeId = 1 };
-            var permission = _mapper.Map<PermissionDTO, Permission>(permissionDto);
+            var permissionDTO = new PermissionDTO { EmployeeForename = "John", EmployeeSurname = "Doe", PermissionTypeId = 1 };
+            var permission = _mapper.Map<PermissionDTO, Permission>(permissionDTO);
             var commandResponse = new CommandResponse<Permission>(permission);
             _mediatorMock.Setup(x => x.Send(It.IsAny<UpdatePermissionCommand>(), default)).ReturnsAsync(commandResponse);
             _elasticSearchBusinessMock.Setup(x => x.IndexAsync(It.IsAny<Permission>())).Returns(Task.FromResult(true));
             var permissionBusiness = new PermissionBusiness(_mediatorMock.Object, _elasticSearchBusinessMock.Object, _mapper);
 
             // Act
-            var result = await permissionBusiness.UpdatePermissionAsync(1, permissionDto);
+            var result = await permissionBusiness.UpdatePermissionAsync(1, permissionDTO);
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsType<CommandResponse<PermissionDTO>>(result);
+            Assert.IsType<CommandResponse<PermissionDTOGet>>(result);
             Assert.Equal(commandResponse.Success, result.Success);
             Assert.NotNull(result.Data);
-            Assert.IsType<PermissionDTO>(result.Data);
+            Assert.IsType<PermissionDTOGet>(result.Data);
             Assert.Equal(permission.EmployeeForename, result.Data.EmployeeForename);
             Assert.Equal(permission.EmployeeSurname, result.Data.EmployeeSurname);
             Assert.Equal(permission.PermissionTypeId, result.Data.PermissionTypeId);

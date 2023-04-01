@@ -30,7 +30,7 @@ namespace N5CompanyAPI.Controllers
         /// <response code="201">Returns the newly created permission data.</response>
         /// <response code="400">Return data containing information about why has the request failed.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(PermissionDTO), 201)]
+        [ProducesResponseType(typeof(PermissionDTOGet), 201)]
         [ProducesResponseType(typeof(ErrorResponse), 400)]
         public async Task<IActionResult> RequestPermission([FromBody] PermissionDTO model)
         {
@@ -69,7 +69,7 @@ namespace N5CompanyAPI.Controllers
         /// <response code="200">Returns the response data container the updated permission information.</response>
         /// <response code="400">Return data containing information about why has the request failed.</response>
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(CommandResponse<PermissionDTO>), 200)]
+        [ProducesResponseType(typeof(CommandResponse<PermissionDTOGet>), 200)]
         [ProducesResponseType(typeof(ErrorResponse), 400)]
         public async Task<IActionResult> ModifyPermission(int id, [FromBody] PermissionDTO model)
         {

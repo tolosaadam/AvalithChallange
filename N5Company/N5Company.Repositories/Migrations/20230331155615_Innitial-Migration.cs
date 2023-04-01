@@ -57,9 +57,9 @@ namespace N5Company.Repositories.Migrations
                 columns: new[] { "Id", "EmployeeForename", "EmployeeSurname", "PermissionDate", "PermissionTypeId" },
                 values: new object[,]
                 {
-                    { 1, "Forename 1", "Surname 1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 2, "Forename 2", "Surname 2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 3, "Forename 3", "Surname 3", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 }
+                    { 1, "Forename 1", "Surname 1", DateTime.Now, 1 },
+                    { 2, "Forename 2", "Surname 2", DateTime.Now, 2 },
+                    { 3, "Forename 3", "Surname 3", DateTime.Now, 3 }
                 });
 
             migrationBuilder.CreateIndex(

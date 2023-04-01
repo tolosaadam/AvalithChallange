@@ -10,10 +10,12 @@ namespace N5Company.MapperProfiles
     {
         public PermissionProfile()
         {
+            CreateMap<Permission, PermissionDTOGet>();
+            CreateMap<PermissionDTOGet, Permission>();
             CreateMap<Permission, PermissionDTO>();
             CreateMap<PermissionDTO, Permission>();
-            CreateMap<CommandResponse<Permission>, CommandResponse<PermissionDTO>>();
-            CreateMap<CommandResponse<PermissionDTO>, CommandResponse<Permission>>();
+            CreateMap<CommandResponse<Permission>, CommandResponse<PermissionDTOGet>>();
+            CreateMap<CommandResponse<PermissionDTOGet>, CommandResponse<Permission>>();
         }
     }
 }

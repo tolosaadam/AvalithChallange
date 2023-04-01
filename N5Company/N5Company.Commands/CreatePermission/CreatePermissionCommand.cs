@@ -19,7 +19,7 @@ namespace N5Company.Commands.CreatePermission
             EmployeeForename = employeeForename;
             EmployeeSurname = employeeSurname;
             PermissionTypeId = permissionTypeId;
-            PermissionDate = new DateTime();
+            PermissionDate = DateTime.Now;
         }
 
         public async Task<ValidatorResponse> Validate() => await CustomValidator.ValidateModelAsync(this, new CreatePermissionCommandValidator());
