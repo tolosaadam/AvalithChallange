@@ -27,6 +27,10 @@ namespace N5Company.Commands.CreatePermission
 
             if (validationResult.Errors.Any()) return new CommandResponse<Permission>(string.Join(", ", validationResult.Errors));
 
+            var permissionType = await _unitOfWork.GetRepository<PermissionType>().FindByIdAsync(request.PermissionTypeId);
+
+            if (permissionType == null) return new CommandResponse<Permission>($"PermissionType not found. Id => {request.PermissionTypeId} invalid");
+
             var permission = new Permission
             {
                 EmployeeForename = request.EmployeeForename,

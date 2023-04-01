@@ -5,6 +5,7 @@ using N5Company.Repositories.Interfaces;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace N5Company.Commands.UpdatePermission
 {
@@ -24,6 +25,10 @@ namespace N5Company.Commands.UpdatePermission
             if (validationResult.Errors.Any()) return new CommandResponse<Permission>(string.Join(", ", validationResult.Errors));
 
             var permission = await _unitOfWork.GetRepository<Permission>().FindByIdAsync(request.Id);
+
+            var permissionType = await _unitOfWork.GetRepository<PermissionType>().FindByIdAsync(request.PermissionTypeId);
+
+            if (permissionType == null) return new CommandResponse<Permission>($"PermissionType not found. Id => {request.PermissionTypeId} invalid");
 
             if (permission == null) return new CommandResponse<Permission>("Permission not found.");
 

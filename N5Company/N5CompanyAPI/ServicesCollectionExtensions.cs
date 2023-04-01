@@ -25,6 +25,7 @@ namespace N5CompanyAPI
             services.AddScoped<IElasticSearchBusiness<Permission>, ElasticSearchBusiness<Permission>>();
             services.AddScoped<IPermissionBusiness, PermissionBusiness>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
+            services.AddScoped<IPermissionTypeRepository, PermissionTypeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IKafkaProducerBusiness, KafkaProducerBusiness>();
             return services;
