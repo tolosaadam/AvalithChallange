@@ -32,6 +32,20 @@ To run the Docker image, execute the following command from Visual Studio: docke
 
 The API will be available at http://localhost:5000, and Swagger will automatically open when the API is running.
 
+## Unit Testing
+
+This project has implemented unit testing to ensure code quality and catch any potential bugs early in the development process.
+
+### Running the Tests
+
+To run the unit tests, follow these steps:
+
+1. Open the solution in Visual Studio.
+2. Open the Test Explorer window by going to `Test` > `Windows` > `Test Explorer`.
+3. Click on the `Run All` button to run all tests.
+
+All unit tests should pass without any errors.
+
 ## Authors
 
 - [Adam Ezequiel Tolosa](https://github.com/tolosaadam) - Unique Contributor.
